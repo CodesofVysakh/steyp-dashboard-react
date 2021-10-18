@@ -1,12 +1,17 @@
 import styled from 'styled-components';
 import Round from '../../assets/icons/round.svg';
 import Locked from '../../assets/icons/locked.svg';
+import Unlocked from '../../assets/icons/unlocked.svg';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
 
-export default function Login() {
-    const [symbolsArr] = useState(["e", "E", "+", "-", "."]);
+export default function Password() {
+    const [isLoad, setLoad] = useState(false);
+
+    const toggle = () => {
+        setLoad(!isLoad);
+    } 
 
     return (
         <Content>
@@ -21,10 +26,12 @@ export default function Login() {
             </Description>
             <Block>
                 <Form>
-                    <PhoneIcon src={Locked} alt="Icon" />
-                    <Input type="password" placeholder="Password" required />
-                    <Span>Login with OTP</Span>
-                    <Link to="/password">
+                    <PhoneIcon src={ isLoad ? Locked : Unlocked } onClick={toggle} alt="Icon" />
+                    <Input type={ isLoad ? "password" : "text" } placeholder="Password" required />
+                    <Link to="/otplogin">
+                        <Span>Login with OTP</Span>
+                    </Link>
+                    <Link to="/dashboard">
                         <Button type="submit" value="Submit"  />
                     </Link>
                 </Form>
@@ -55,6 +62,7 @@ const Description = styled.p`
 const Block = styled.div``;
 const Form = styled.form`
     position: relative;
+    text-align: right;
 `;
 const PhoneIcon = styled.img`
     width: 12px;
@@ -73,13 +81,12 @@ const Input = styled.input`
     &::-webkit-inner-spin-button,&::-webkit-outer-spin-button{
         -webkit-appearance: none;
         -moz-appearance: textfield;
-
     }
 `;
 const Span = styled.span`
     color: #677af5;
     font-size: 16px;
-    display: block;
+    display: inline-block;
     text-align: right;
     margin-bottom: 30px;
     font-weight: 600;

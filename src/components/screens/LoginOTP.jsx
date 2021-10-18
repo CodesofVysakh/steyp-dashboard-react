@@ -2,34 +2,43 @@ import styled from 'styled-components';
 import Round from '../../assets/icons/round.svg';
 import Phone from '../../assets/icons/phone.svg';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 
-export default function Login() {
+export default function LoginOTP() {
     const [symbolsArr] = useState(["e", "E", "+", "-", "."]);
+    const [counter, setCounter] = useState(30);
+    useEffect(() => {
+        const timer =
+        counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
+        return () => clearInterval(timer);
+    }, [counter]);
 
+    const resetCounter = () => {
+       return setCounter(30);
+    }
     return (
         <Content>
             <Container>
                 <Image src={Round} alt="Round" />
             </Container>
             <Title>
-                Let's root together and watch other grow
+                Enter OTP sent to your number
             </Title>
             <Description>
-                An inventive collaboration for smart dawn inclining kids to match their vision.
+                The recovery code was sent to your phone number. <br /> Please enter the code
             </Description>
             <Block>
                 <Form>
                     <PhoneIcon src={Phone} alt="Icon" />
-                    <Input type="number" placeholder="Phone Number" required onKeyDown={e => symbolsArr.includes(e.key) && e.preventDefault()} />
-                    <Link to="/forgotpassword">
-                        <Span>Forgot Password?</Span>
+                    <Input type="number" placeholder="Enter OTP" onKeyDown={e => symbolsArr.includes(e.key) && e.preventDefault()} required />
+                    <Span onClick={counter === 0 ? resetCounter : "" } counter={counter} >Resend OTP <Wrap counter={counter}>in {counter}</Wrap></Span>
+                    <Link to="/password">
+                        <Button type="submit" value="Verify"  />
                     </Link>
                     <Link to="/password">
-                        <Button type="submit" value="Continue"  />
+                        <LoginSpan>Login with Password</LoginSpan>
                     </Link>
-                    <Small>New to Steyp? <Link to="/signup"><Anchor>Create Account</Anchor></Link></Small>
                 </Form>
             </Block>
         </Content>
@@ -72,21 +81,28 @@ const Input = styled.input`
     border-radius: 8px;
     display: block;
     width: 100%;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     &::-webkit-inner-spin-button,&::-webkit-outer-spin-button{
         -webkit-appearance: none;
         -moz-appearance: textfield;
 
     }
 `;
-const Span = styled.span`
-    color: #677af5;
+const Span = styled.div`
+    color: ${({counter}) => (counter === 0 ? '#f00' : '#818181' )};
     font-size: 16px;
+    font-weight: 600;
     display: block;
     text-align: right;
-    margin-bottom: 30px;
-    font-weight: 600;
+    margin-bottom: 30px !important;
     cursor: pointer;
+    text-decoration: ${({counter}) => (counter === 0 ? 'underline' : 'none' )};;
+`;
+const Wrap = styled.div`
+    display: ${({counter}) => (counter === 0 ? 'none' : 'inline-block' )};
+    color: #818181;
+    font-size: 16px;
+    font-weight: 600;
 `;
 const Button = styled.input`
     display: block;
@@ -96,21 +112,15 @@ const Button = styled.input`
     border-radius: 8px;
     color: #fff;
     font-size: 16px;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
     cursor: pointer;
 `;
-const Small = styled.small`
-    font-size: 14px;
-    text-align: center;
-    display: block;
-    font-weight: 600;
-    color: #818181;
-`;
-const Anchor = styled.a`
+const LoginSpan = styled.span`
     color: #677af5;
+    font-size: 16px;
+    display: block;
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 600;
+    cursor: pointer;
 `;
-
-
-
-
-

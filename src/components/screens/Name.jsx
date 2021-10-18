@@ -1,12 +1,16 @@
 import styled from 'styled-components';
 import Round from '../../assets/icons/round.svg';
-import Phone from '../../assets/icons/phone.svg';
+import Person from '../../assets/icons/person.svg';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
 
-export default function Login() {
-    const [symbolsArr] = useState(["e", "E", "+", "-", "."]);
+export default function Name() {
+    const [isLoad, setLoad] = useState(false);
+
+    const toggle = () => {
+        setLoad(!isLoad);
+    } 
 
     return (
         <Content>
@@ -14,22 +18,21 @@ export default function Login() {
                 <Image src={Round} alt="Round" />
             </Container>
             <Title>
-                Let's root together and watch other grow
+                Enter your name
             </Title>
             <Description>
-                An inventive collaboration for smart dawn inclining kids to match their vision.
+                We can provide you the certificate with the entered name
             </Description>
             <Block>
                 <Form>
-                    <PhoneIcon src={Phone} alt="Icon" />
-                    <Input type="number" placeholder="Phone Number" required onKeyDown={e => symbolsArr.includes(e.key) && e.preventDefault()} />
-                    <Link to="/forgotpassword">
-                        <Span>Forgot Password?</Span>
+                    <PersonIcon src={ Person } onClick={toggle} alt="Icon" />
+                    <Input type={ isLoad ? "password" : "text" } placeholder="Enter your name" required />
+                    <Link to="/otplogin">
+                        <Span>Login with OTP</Span>
                     </Link>
-                    <Link to="/password">
+                    <Link to="/referal">
                         <Button type="submit" value="Continue"  />
                     </Link>
-                    <Small>New to Steyp? <Link to="/signup"><Anchor>Create Account</Anchor></Link></Small>
                 </Form>
             </Block>
         </Content>
@@ -58,17 +61,18 @@ const Description = styled.p`
 const Block = styled.div``;
 const Form = styled.form`
     position: relative;
+    text-align: right;
 `;
-const PhoneIcon = styled.img`
-    width: 12px;
+const PersonIcon = styled.img`
+    width: 16px;
     display: inline-block;
     position: absolute;
     top: 18px;
-    left: 16px;
+    left: 14px;
 `;
 const Input = styled.input`
     border: 1px solid #000;
-    padding: 16px 36px;
+    padding: 16px 40px;
     border-radius: 8px;
     display: block;
     width: 100%;
@@ -76,13 +80,12 @@ const Input = styled.input`
     &::-webkit-inner-spin-button,&::-webkit-outer-spin-button{
         -webkit-appearance: none;
         -moz-appearance: textfield;
-
     }
 `;
 const Span = styled.span`
     color: #677af5;
     font-size: 16px;
-    display: block;
+    display: inline-block;
     text-align: right;
     margin-bottom: 30px;
     font-weight: 600;
@@ -99,18 +102,3 @@ const Button = styled.input`
     margin-bottom: 10px;
     cursor: pointer;
 `;
-const Small = styled.small`
-    font-size: 14px;
-    text-align: center;
-    display: block;
-    font-weight: 600;
-    color: #818181;
-`;
-const Anchor = styled.a`
-    color: #677af5;
-`;
-
-
-
-
-
